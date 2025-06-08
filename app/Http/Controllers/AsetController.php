@@ -70,8 +70,11 @@ class AsetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Aset $aset)
     {
-        //
+        $aset->delete();
+
+        return redirect()->route('aset.index')
+            ->with('success', 'Data berhasil dihapus');
     }
 }

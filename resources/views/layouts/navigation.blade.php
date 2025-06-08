@@ -16,8 +16,25 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link : href="{{ route('aset.index') }}" :active="request()->routeIs('aset')">
+                        {{ __('Aset') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link : href="{{ route('transaksi.masuk') }}" :active="request()->routeIs('transaksi')">
+                        {{ __('Masuk') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link : href="{{ route('transaksi.keluar') }}" :active="request()->routeIs('transaksi')">
+                        {{ __('Keluar') }}
+                    </x-nav-link>
+                </div>
             </div>
-
+         
+               
+ 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">

@@ -7,7 +7,11 @@
         @csrf
         <div class="mb-3">
             <label>Kategori</label>
-            <input type="text" name="kategori" class="form-control" required>
+            <select name="kategori" class="form-control" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="jok mobil">Jok Mobil</option>
+                <option value="jok motor">Jok Motor</option>
+            </select>
         </div>
         <div class="mb-3">
             <label>Merk</label>
@@ -27,11 +31,20 @@
         </div>
         <div class="mb-3">
             <label>Status</label>
-            <input type="text" name="status" class="form-control" required>
+            <select name="status" class="form-control" required>
+                <option value="">-- Pilih Status --</option>
+                <option value="masuk">Masuk</option>
+                <option value="keluar">Keluar</option>
+            </select>
         </div>
         <div class="mb-3">
             <label>Progress</label>
-            <input type="text" name="progress" class="form-control" required>
+            <select name="progress" class="form-control" required>
+                <option value="">-- Pilih Progress --</option>
+                <option value="done">Done</option>
+                <option value="on progress">On Progress</option>
+                <option value="canceled">Canceled</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>

@@ -34,7 +34,7 @@
                         <td>{{ $aset->status }}</td>
                         <td>{{ $aset->progress }}</td>
                         <td>
-                            <a href="{{ route('aset.edit', $aset->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="#" class="btn btn-sm btn-warning">Lihat</a>
                             <form action="{{ route('aset.destroy', $aset->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
