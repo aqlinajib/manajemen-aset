@@ -6,41 +6,57 @@ use Illuminate\Http\Request;
 use App\Models\TransaksiAset;
 use App\Models\Aset;
 
-
 class TransaksiAsetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //
     }
-    
-    public function masuk()
+
+    public function masuk(Request $request)
     {
-    $transaksis = \App\Models\TransaksiAset::with('aset')->where('status', 'Masuk')->orderByDesc('tanggal')->get();
-    return view('transaksi.masuk', compact('transaksis'));
+        $query = TransaksiAset::with('aset')->where('status', 'Masuk');
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->whereHas('aset', function ($q) use ($search) {
+                $q->where('kategori', 'like', "%$search%")
+                  ->orWhere('merk', 'like', "%$search%")
+                  ->orWhere('spesifikasi', 'like', "%$search%");
+            });
+        }
+
+        $perPage = $request->get('per_page', 5);
+        $transaksis = $query->orderByDesc('tanggal')->paginate($perPage);
+
+        return view('transaksi.masuk', compact('transaksis'));
     }
 
-    public function keluar()
+    public function keluar(Request $request)
     {
-        $transaksis = \App\Models\TransaksiAset::with('aset')->where('status', 'Keluar')->orderByDesc('tanggal')->get();
+        $query = TransaksiAset::with('aset')->where('status', 'Keluar');
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->whereHas('aset', function ($q) use ($search) {
+                $q->where('kategori', 'like', "%$search%")
+                  ->orWhere('merk', 'like', "%$search%")
+                  ->orWhere('spesifikasi', 'like', "%$search%");
+            });
+        }
+
+        $perPage = $request->get('per_page', 5);
+        $transaksis = $query->orderByDesc('tanggal')->paginate($perPage);
+
         return view('transaksi.keluar', compact('transaksis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $asets = Aset::all();
         return view('transaksi.create', compact('asets'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -51,76 +67,59 @@ class TransaksiAsetController extends Controller
             'progress' => 'nullable|string',
             'keterangan' => 'nullable|string',
         ]);
-    
+
         $aset = Aset::findOrFail($request->aset_id);
-    
-        // Logika update jumlah
+
         if ($request->status == 'Masuk') {
             $aset->jumlah += $request->jumlah;
         } else {
-            // Pastikan stok cukup
             if ($aset->jumlah < $request->jumlah) {
                 return back()->withErrors(['jumlah' => 'Stok aset tidak mencukupi!']);
             }
             $aset->jumlah -= $request->jumlah;
         }
         $aset->save();
-    
-        // Simpan transaksi
-        \App\Models\TransaksiAset::create($request->all());
-    
-        return redirect()->route('transaksi.masuk')->with('success', 'Transaksi berhasil dicatat!');
+
+        TransaksiAset::create($request->all());
+
+        return redirect()
+        ->route($request->status == 'Masuk' ? 'transaksi.masuk' : 'transaksi.keluar')
+        ->with('success', 'Transaksi berhasil dicatat!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        $transaksi = TransaksiAset::with('aset')->findOrFail($id);
+        return view('transaksi.show', compact('transaksi'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-    // Temukan transaksi
-    $transaksi = TransaksiAset::findOrFail($id);
-    $aset = $transaksi->aset; // Relasi aset
+        $transaksi = TransaksiAset::findOrFail($id);
+        $aset = $transaksi->aset;
 
-    if ($aset) {
-        // Logika rollback jumlah
-        if ($transaksi->status == 'Masuk') {
-            // Dulu bertambah, sekarang dikurangi
-            $aset->jumlah -= $transaksi->jumlah;
-            if ($aset->jumlah < 0) $aset->jumlah = 0; // Prevent minus, optional
-        } else {
-            // Dulu berkurang, sekarang ditambah lagi
-            $aset->jumlah += $transaksi->jumlah;
+        if ($aset) {
+            if ($transaksi->status == 'Masuk') {
+                $aset->jumlah -= $transaksi->jumlah;
+                if ($aset->jumlah < 0) $aset->jumlah = 0;
+            } else {
+                $aset->jumlah += $transaksi->jumlah;
+            }
+            $aset->save();
         }
-        $aset->save();
-    }
 
-    // Hapus transaksi
-    $transaksi->delete();
+        $transaksi->delete();
 
-    return back()->with('success', 'Transaksi berhasil dihapus & stok dikembalikan!');
+        return back()->with('success', 'Transaksi berhasil dihapus & stok dikembalikan!');
     }
 }

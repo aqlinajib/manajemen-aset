@@ -12,4 +12,9 @@ class Aset extends Model
     protected $fillable = [
         'kategori', 'merk', 'spesifikasi', 'jumlah', 'tanggal', 'status', 'progress'
     ];
+
+    public function transaksis()
+    {
+        return $this->hasMany(TransaksiAset::class);
+    }
 }

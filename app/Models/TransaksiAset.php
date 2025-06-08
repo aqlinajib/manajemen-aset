@@ -17,4 +17,11 @@ class TransaksiAset extends Model
     {
         return $this->belongsTo(Aset::class);
     }
+
+    public function show(string $id)
+    {
+        $transaksi = \App\Models\TransaksiAset::with('aset')->findOrFail($id);
+        return view('transaksi.show', compact('transaksi'));
+    }
+
 }
