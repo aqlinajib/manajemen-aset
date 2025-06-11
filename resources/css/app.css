@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.login-left {
+    background-image: url("bg-login.png");
+    background-size: cover;
+    background-position: center;
+}
