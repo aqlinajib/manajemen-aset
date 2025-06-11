@@ -27,6 +27,7 @@ class TransaksiAset extends Model
     {
     return $this->hasMany(TransaksiAsetHistory::class, 'transaksi_aset_id');
     }
+    
 
 
 }

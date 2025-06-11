@@ -6,6 +6,7 @@ use App\Http\Controllers\TransaksiAsetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AktivitasController;
+use App\Http\Controllers\HistoryController;
 
 // Arahkan root (/) langsung ke halaman login
 Route::get('/', function () {
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
 
     // View all dan detail
     Route::get('/aktivitas', [AktivitasController::class, 'index'])->name('aktivitas.index');
+
+    //history
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+
 });
 
 // Include route auth (login, register, etc.)
