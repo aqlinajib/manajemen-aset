@@ -4,7 +4,8 @@
         <a href="{{ route('dashboard') }}">
             <x-application-logo class="block h-9 w-auto fill-current text-white" />
         </a>
-        <!-- Hamburger (untuk mobile) -->
+
+        <!-- Hamburger (for mobile) -->
         <div class="sm:hidden">
             <button @click="open = !open" class="text-white p-2 rounded-md focus:outline-none">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -36,6 +37,8 @@
                     <path :class="{'transform rotate-180': showDataAsetSubmenu}" class="transition-transform" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
+
+            <!-- Submenu for Data Aset -->
             <div x-show="showDataAsetSubmenu" x-collapse class="pl-4 space-y-2">
                 <x-nav-link href="{{ route('transaksi.masuk') }}" :active="request()->routeIs('transaksi.masuk')" class="text-white hover:text-gray-300 py-2 px-4 rounded-md">
                     Data Aset Masuk
@@ -44,14 +47,14 @@
                     Data Aset Keluar
                 </x-nav-link>
             </div>
-            
-            <!-- History Link: Tambahkan ke dalam submenu dropdown agar sejenis dengan Data Aset -->
-            <x-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')" class="w-full text-left text-white hover:text-gray-300 py-2 px-4 rounded-md">
-                {{ __('History') }}
-            </x-nav-link>
         </div>
 
-        <!-- Profile and Logout -->
+        <!-- History Link: Added to submenu to maintain consistency with Data Aset -->
+        <x-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')" class="w-full text-left text-white hover:text-gray-300 py-2 px-4 rounded-md">
+            {{ __('History') }}
+        </x-nav-link>
+
+        <!-- Profile and Logout Section -->
         <div class="mt-auto">
             <x-dropdown align="left" width="48">
                 <x-slot name="trigger">

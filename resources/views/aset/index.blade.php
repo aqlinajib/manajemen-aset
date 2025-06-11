@@ -54,9 +54,7 @@
                         <th class="p-3 w-40 border-r">Merk</th>
                         <th class="p-3 w-64 border-r">Spesifikasi</th>
                         <th class="p-3 w-20 border-r">Jumlah</th>
-                        <th class="p-3 w-32 border-r">Tanggal</th>
                         <th class="p-3 w-28 border-r">Status</th>
-                        <th class="p-3 w-32 border-r">Progress</th>
                         <th class="p-3 w-28">Aksi</th>
                     </tr>
                 </thead>
@@ -68,9 +66,7 @@
                             <td class="p-3 border-r break-words max-w-[150px]">{{ $aset->merk }}</td>
                             <td class="p-3 border-r break-words max-w-[240px]">{{ $aset->spesifikasi }}</td>
                             <td class="p-3 border-r">{{ $aset->jumlah }}</td>
-                            <td class="p-3 border-r">{{ \Carbon\Carbon::parse($aset->tanggal)->format('d M Y') }}</td>
                             <td class="p-3 border-r">{{ $aset->status }}</td>
-                            <td class="p-3 border-r truncate max-w-[140px]">{{ $aset->progress ?? '-' }}</td>
                             <td class="p-3 flex flex-col sm:flex-row justify-center gap-2 items-center border-0">
                                 <a href="{{ route('aset.show', $aset->id) }}"
                                    class="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition w-full sm:w-auto mb-1 sm:mb-0">
