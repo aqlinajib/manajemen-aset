@@ -13,6 +13,7 @@
                     <option value="">-- Pilih Kategori --</option>
                     <option value="Jok Mobil">Jok Mobil</option>
                     <option value="Jok Motor">Jok Motor</option>
+                    <option value="Busa">Busa</option>
                 </select>
             </div>
 

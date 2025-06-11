@@ -23,5 +23,10 @@ class TransaksiAset extends Model
         $transaksi = \App\Models\TransaksiAset::with('aset')->findOrFail($id);
         return view('transaksi.show', compact('transaksi'));
     }
+    public function histories()
+    {
+    return $this->hasMany(TransaksiAsetHistory::class, 'transaksi_aset_id');
+    }
+
 
 }

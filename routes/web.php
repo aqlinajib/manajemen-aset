@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     
     // Aset
     Route::resource('aset', AsetController::class);
+    Route::post('/aset/import', [AsetController::class, 'import'])->name('aset.import');
 
     // Transaksi Aset
     Route::resource('transaksi-aset', TransaksiAsetController::class);

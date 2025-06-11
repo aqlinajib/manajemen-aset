@@ -15,7 +15,42 @@
             <div><strong>Progress:</strong> {{ ucfirst($transaksi->progress) }}</div>
             <div><strong>Keterangan:</strong> {{ $transaksi->keterangan ?? '-' }}</div>
         </div>
-
+        <div class="mt-8 bg-white p-6 rounded shadow">
+            <h3 class="text-lg font-bold mb-4">History Perubahan Transaksi</h3>
+            @if($histories->count())
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-center border border-gray-300">
+                        <thead class="bg-black text-white">
+                            <tr>
+                                <th class="p-2 border-r">Tanggal</th>
+                                <th class="p-2 border-r">Progress</th>
+                                <th class="p-2 border-r">Aktivitas</th>
+                                <th class="p-2">User</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-800 bg-white font-mono">
+                            @foreach ($histories as $history)
+                                <tr class="hover:bg-gray-100">
+                                    <td class="p-2 border-t border-r">{{ \Carbon\Carbon::parse($history->created_at)->format('d M Y H:i') }}</td>
+                                    <td class="p-2 border-t border-r">
+                                        <span class="inline-block px-2 py-1 rounded text-xs
+                                            {{ strtolower($history->progress) == 'done' ? 'bg-green-100 text-green-700' :
+                                                (strtolower($history->progress) == 'on progress' ? 'bg-yellow-100 text-yellow-700' :
+                                                (strtolower($history->progress) == 'canceled' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700')) }}">
+                                            {{ $history->progress ?? '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="p-2 border-t border-r">{{ $history->activity ?? '-' }}</td>
+                                    <td class="p-2 border-t">{{ $history->user->name ?? '-' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-gray-500">Belum ada history untuk transaksi ini.</p>
+            @endif
+        </div>        
         <div class="mt-6">
             <a href="{{ url()->previous() }}" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">← Kembali</a>
         </div>

@@ -6,7 +6,7 @@
 
         {{-- Header --}}
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Barang Keluar</h2>
+            <h2 class="text-2xl font-bold text-gray-800">Barang Masuk</h2>
         </div>
 
         {{-- Filter + Tambah Transaksi --}}
@@ -46,9 +46,9 @@
             </div>
         @endif
 
-        {{-- Tabel --}}
-        <div class="w-full overflow-x-auto bg-white shadow rounded-lg">
-            <table class="w-full text-sm text-center table-fixed border border-gray-300">
+        {{-- Table Responsive --}}
+        <div class="w-full bg-white shadow rounded-lg overflow-x-auto">
+            <table class="min-w-full text-sm text-center table-auto border border-gray-300">
                 <thead class="bg-black text-white uppercase tracking-wider">
                     <tr>
                         <th class="p-3 w-10 border-r">No</th>
@@ -64,33 +64,31 @@
                 <tbody class="text-gray-700 divide-y">
                     @forelse($transaksis as $trx)
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-r">{{ $loop->iteration + ($transaksis->currentPage() - 1) * $transaksis->perPage() }}</td>
+                            <td class="p-3 border-r">{{ $loop->iteration }}</td>
                             <td class="p-3 border-r break-words">{{ $trx->aset->kategori ?? '-' }}</td>
                             <td class="p-3 border-r break-words max-w-[150px]">{{ $trx->aset->merk ?? '-' }}</td>
                             <td class="p-3 border-r break-words max-w-[240px]">{{ $trx->aset->spesifikasi ?? '-' }}</td>
                             <td class="p-3 border-r">{{ $trx->jumlah }}</td>
                             <td class="p-3 border-r">{{ \Carbon\Carbon::parse($trx->tanggal)->format('d M Y') }}</td>
-                            <td class="p-3 border-r break-words max-w-[200px]">{{ $trx->keterangan ?? '-' }}</td>
-                            <td class="p-3">
-                                <div class="relative inline-block text-left">
-                                    <button @click="$refs.dropdown{{ $trx->id }}.classList.toggle('hidden')"
-                                            class="bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1 rounded">
-                                        Aksi ▾
-                                    </button>
-                                    <div x-ref="dropdown{{ $trx->id }}" class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 shadow-md rounded z-10 hidden">
-                                        <a href="{{ route('transaksi-aset.show', $trx->id) }}"
-                                            class="block px-4 py-2 text-sm text-green-600 hover:bg-green-50">Lihat</a>
-                                        <button @click="showModal = true; selectedId = {{ $trx->id }}"
-                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                            Hapus
-                                        </button>
-                                    </div>
-                                </div>
+                            <td class="p-3 border-r truncate max-w-[200px]">{{ $trx->keterangan ?? '-' }}</td>
+                            <td class="p-3 flex flex-col sm:flex-row justify-center gap-2 items-center border-0">
+                                <a href="{{ route('transaksi-aset.show', $trx->id) }}"
+                                   class="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition w-full sm:w-auto mb-1 sm:mb-0">
+                                    Lihat
+                                </a>
+                                <a href="{{ route('transaksi-aset.edit', $trx->id) }}"
+                                    class="px-3 py-1 text-sm bg-yellow-400 text-gray-900 rounded hover:bg-yellow-500 transition w-full sm:w-auto mb-1 sm:mb-0">
+                                     Edit
+                                 </a>
+                                <button @click="showModal = true; selectedId = {{ $trx->id }}"
+                                        class="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition w-full sm:w-auto">
+                                    Hapus
+                                </button>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="p-4 text-center text-gray-500">Belum ada transaksi keluar.</td>
+                            <td colspan="8" class="p-4 text-center text-gray-500">Belum ada transaksi masuk.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -11,8 +11,8 @@ class DashboardController extends Controller
     public function index()
     {
         $totalAssets = Aset::count(); // Jumlah semua jenis aset
-        $criticalAssets = Aset::where('jumlah', '<=', 10)->get(); // Aset yang jumlahnya <= 10
-        $readyAssets = Aset::where('status', 'ready')->count(); // Aset yang statusnya 'ready'
+        $criticalAssets = Aset::where('jumlah', '<=', 9)->get(); // Aset yang jumlahnya <= 9
+        $readyAssets = Aset::where('jumlah', '>=', 10)->count(); // Aset yang statusnya 'ready'
         $totalItem = Aset::sum('jumlah'); // Jumlah total dari semua aset
 
         // Ambil semua aktivitas dari tabel transaksi untuk scroll di frontend
